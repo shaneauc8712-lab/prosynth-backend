@@ -1,0 +1,87 @@
+{
+  "name": "ClickUp ROI Automation",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "ClickUp Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clickup-roi-trigger",
+        "responseMode": "onReceived",
+        "responseData": "default"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Parse ClickUp Payload",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 300],
+      "parameters": {
+        "functionCode": "let body = $json.body; let parsed = {}; try { if (typeof body === 'string') { parsed = JSON.parse(body); } else { parsed = body; } } catch (e) { parsed = { message: body }; } let roiParams = {}; if (parsed && parsed.task && Array.isArray(parsed.task.custom_fields)) { parsed.task.custom_fields.forEach(f => { if (f.name && f.value !== undefined) { roiParams[f.name] = f.value; } }); } if (parsed && parsed.task) { return [{ json: { taskId: parsed.task.id, roiParams } }]; } else if (parsed && parsed.body) { return [{ json: { message: parsed.body, roiParams } }]; } else { return [{ json: { message: 'No structured data', raw: parsed, roiParams } }]; }"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Invoke CLIMB ROI API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [750, 300],
+      "parameters": {
+        "url": "https://api.prosynth.ai/api/roi/compute",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "sendBody": true,
+"jsonParameters": true,
+"bodyParametersJson": "={\"params\": $json.roiParams}",
+"options": {
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}
+      }
+    },
+    {
+      "id": "4",
+      "name": "Update ClickUp Task",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [1000, 300],
+      "parameters": {
+        "url": "={{'https://api.clickup.com/api/v2/task/' + $json.taskId}}",
+        "method": "PUT",
+        "jsonParameters": true,
+        "options": {},
+        "headers": {
+          "Authorization": "={{$env.CLICKUP_API_KEY}}",
+          "Content-Type": "application/json"
+        },
+        "bodyParametersJson": "={\"custom_fields\": [{\"id\": \"dashboard_url\", \"value\": $json.data.dashboard_url}]}"
+      }
+    }
+  ],
+  "connections": {
+    "ClickUp Webhook Trigger": {
+      "main": [
+        [{ "node": "Parse ClickUp Payload", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse ClickUp Payload": {
+      "main": [
+        [{ "node": "Invoke CLIMB ROI API", "type": "main", "index": 0 }]
+      ]
+    },
+    "Invoke CLIMB ROI API": {
+      "main": [
+        [{ "node": "Update ClickUp Task", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "id": "ClickUpROIWorkflow"
+}

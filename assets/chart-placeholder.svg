@@ -1,0 +1,6 @@
+<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="200" fill="#DDDDDD"/>
+  <text x="50%" y="50%" font-size="14" fill="#333333" text-anchor="middle" alignment-baseline="middle">
+    CHART PLACEHOLDER
+  </text>
+</svg>

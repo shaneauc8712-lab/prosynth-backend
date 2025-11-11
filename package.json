@@ -1,0 +1,14 @@
+{
+  "name": "prosynth-backend",
+  "version": "1.0.0",
+  "description": "ProSynth ROI Dashboard Backend Server for Render Deployment",
+  "main": "myserver.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node myserver.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

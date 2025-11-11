@@ -1,0 +1,117 @@
+/* components.css
+   Reusable UI components extending base.css and theme.css
+   ------------------------------------------------------ */
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 0.85em 1.75em;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Inter", sans-serif;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.button-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+.button-secondary:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+/* Section Layout Wrappers */
+.section {
+  padding: 6rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  font-size: 2.25rem;
+  color: var(--text-dark);
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Card / Panel Blocks */
+.card {
+  background-color: var(--card-bg);
+  border: none;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 2.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--text-dark);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Navbar Refinements */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navbar a {
+  color: var(--color-text);
+  text-decoration: none;
+  margin: 0 1rem;
+  font-weight: 500;
+}
+
+.navbar a.active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* Footer Refinements */
+.footer {
+  background-color: var(--color-background-alt);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
