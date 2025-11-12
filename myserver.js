@@ -40,24 +40,22 @@ app.use("/dashboard", (req, res, next) => {
 // Serve static dashboard files after token verification
 app.use("/dashboard", express.static(path.join(__dirname, "dashboard")));
 
+// Parse JSON before defining routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// ROI computation endpoint (moved before dashboard middleware)
-app.post("/api/roi/compute", (req, res) => {
-  const { params } = req.body || {};
-  if (!params) {
-    return res.status(400).json({ error: "Missing params in request body" });
-  }
+// Debug middleware to log all routes
+app.use((req, res, next) => {
+  console.log("Incoming request:", req.method, req.originalUrl);
+  next();
+});
 
-  // Simulated ROI computation logic
-  const roiScore = Math.random().toFixed(2);
-  const dashboardUrl = `https://prosynth-dashboard.netlify.app/dashboard?roi=${roiScore}`;
-
-  res.json({
-    dashboard_url: dashboardUrl,
-    roiScore: parseFloat(roiScore),
-    message: "ROI computation successful",
+// Direct ROI endpoint (ensure registered before 404 handler)
+app.post("/api/roi/calculate", (req, res) => {
+  console.log("ROI /api/roi/calculate endpoint hit");
+  res.status(200).json({
+    message: "ROI endpoint reachable",
+    data: req.body,
   });
 });
 
